@@ -7,7 +7,8 @@ Servo servo;
 
 
 float applyStep(int magnitude){
-  servo.write(magnitude); // DEGRAU
+  int output = mapFloat(magnitude, -100, 100, 45, 135);
+  servo.write(output);
 }
 
 float getOutput(){
@@ -26,14 +27,14 @@ void setup(){
   servo.attach(SERVO_PIN);
 
   Serial.begin(9600);
+  applyStep(0);        // PONTO MORTO
 
-  applyStep(90); // PONTO MORTO
   delay(1000);
   Serial.println("READY");
 
   while(!Serial.available())
     continue;
-
+  
   delay(2000);
 }
 
@@ -41,10 +42,22 @@ void loop(){
   static unsigned long time = millis();
   float time_passed = (millis() - time)/1000.0;
 
-  int step = 135;
+  int step = 100;
   applyStep(step);
   float distance = getOutput();
 
   String response = "[" + String(time_passed) + "," + String(step) + "," + String(distance) + "]";
   Serial.println(response);
+}
+
+float mapFloat(float x, float Xo, float X, float Yo, float Y){
+    float mapped = (Y-Yo)/(X-Xo)*(x-Xo) + Yo;
+
+    if(mapped < Yo)
+        return Yo;
+
+    if(mapped > Y)
+        return Y;
+
+    return mapped;
 }

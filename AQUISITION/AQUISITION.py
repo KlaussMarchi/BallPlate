@@ -2,7 +2,10 @@ import serial
 import pandas as pd
 import time
 
-arduino = serial.Serial('/dev/ttyUSB0', 9600, timeout=5)
+PORT = '/dev/ttyUSB0'
+PORT = 'COM12'
+
+arduino = serial.Serial(PORT, 9600, timeout=5)
 allData = []
 time.sleep(2)
 arduino.write('1'.encode())
