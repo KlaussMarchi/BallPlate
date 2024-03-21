@@ -3,7 +3,7 @@
 #define TRIGGER_PIN 8
 #define ECHO_PIN 9
 #define SERVO_PIN 11
-#define T 0.15
+#define T 0.005
 Servo servo;
 
 float getInput(){
@@ -22,11 +22,11 @@ float applyStep(int magnitude){
 }
 
 double computeController(double inputValue, double setpoint){
-    static double Y_n1, Y_n2, Y_n3, Y_n4;
-    static double X_n1, X_n2, X_n3, X_n4;
+    static double Y_n1, Y_n2;
+    static double X_n1, X_n2;
     
     double X_n = setpoint - inputValue;
-    double Y_n = 55.9685956922464*X_n - 98.9537313153433*X_n1 - 12.7189261538842*X_n2 + 98.9537313153433*X_n3 - 43.2496695383622*X_n4 + 2.0*Y_n2 - Y_n4;
+    double Y_n = -3.471453350180675*X_n + 7.218252198509127*X_n1 -3.74661609977381*X_n2 + 1.951219512195122*Y_n1-0.951219512195122*Y_n2; 
 
     if(Y_n < -100)
         Y_n = -100;
@@ -34,13 +34,8 @@ double computeController(double inputValue, double setpoint){
     if(Y_n > 100)
         Y_n = 100;
     
-    X_n4 = X_n3;
-    X_n3 = X_n2;
     X_n2 = X_n1;
     X_n1 = X_n; 
-
-    Y_n4 = Y_n3;
-    Y_n3 = Y_n2;
     Y_n2 = Y_n1;
     Y_n1 = Y_n;
     return Y_n;
@@ -60,15 +55,15 @@ void setup() {
 
 void loop() {
     static unsigned long time = millis();
-    float time_passed = (millis() - time)/1000.0;
+    double time_passed = (millis() - time)*1e-3;
 
     if(time_passed < T)
         return;
     
     time = millis();
 
-    float setpoint = 20;
-    float input = getInput();
+    float setpoint = 10;
+    float input  = getInput();
     float output = computeController(input, setpoint);
     applyStep(output);
 
