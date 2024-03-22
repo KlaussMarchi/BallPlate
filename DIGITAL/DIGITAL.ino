@@ -26,7 +26,7 @@ double computeController(double inputValue, double setpoint){
     static double X_n1, X_n2;
     
     double X_n = setpoint - inputValue;
-    double Y_n = -3.471453350180675*X_n + 7.218252198509127*X_n1 -3.74661609977381*X_n2 + 1.951219512195122*Y_n1-0.951219512195122*Y_n2; 
+    double Y_n = -7.268431752660472*X_n + 15.040765287341745*X_n1 -7.771048331979746*X_n2 + 1.951219512195122*Y_n1-0.951219512195122*Y_n2;
 
     if(Y_n < -100)
         Y_n = -100;
@@ -64,6 +64,7 @@ void loop() {
 
     float setpoint = 10;
     float input  = getInput();
+
     float output = computeController(input, setpoint);
     applyStep(output);
 
@@ -89,7 +90,7 @@ float mapFloat(float x, float Xo, float X, float Yo, float Y){
 }
 
 double smooth(double val) {
-    const int TAM = 15;
+    const int TAM = 5;
     static double array[TAM];
     static double sum = 0.0;
     static int i = 0;
