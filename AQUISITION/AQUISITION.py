@@ -33,4 +33,4 @@ while True:
         break
 
 df = pd.DataFrame(allData, columns=['time', 'theta', 'distance'])
-df.to_csv('DataBase.csv', index=False)
+df.to_csv('ANALISYS/DataBase.csv', index=False)

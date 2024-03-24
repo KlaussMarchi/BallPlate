@@ -1,6 +1,8 @@
 import control as ctl
 import matplotlib.pyplot as plt
 import numpy as np
+s = ctl.TransferFunction.s
+
 
 def zGrid(G, zeta):
     ctl.root_locus(G)
@@ -20,6 +22,9 @@ def zGrid(G, zeta):
     plt.show()
 
 
-s = ctl.TransferFunction.s
-G = 0.053826279970789*s/(0.417035106*s**2 - 1.0*s + 0.599469914)
-zGrid(G, 0.5911550337988976)
+G     = 0.0206708134012297*(0.155605773*s**2 - 0.400634718*s + 1.0)/(0.15560577*s**2 - 0.78893795*s + 1.0)
+C_aux = (s - 1.5)*(s - 1.5)/(s + 30)/(s + 30)
+
+
+zeta = 0.6
+zGrid(G*C_aux, zeta)
